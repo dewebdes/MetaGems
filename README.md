@@ -12,3 +12,6 @@ https://www.linkedin.com/posts/kaveh-eyni-08060b59_kali-linux-2016-2-how-to-pass
 <h2>Run FireWall and Listen To Attack Packets:</h2><br>
 gcc firewall.c -o wfire<br>
 sudo ./wfire<br>
+
+<h3>to run with DEEP LOG</h3>
+sudo ./wfire > fwdeeplog.txt
