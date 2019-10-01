@@ -12,7 +12,27 @@
 #include <sys/types.h>
 #include <linux/in.h>
 #include <linux/if_ether.h>
-#include <stdlib.h>  /* For exit() function */
+#include <stdint.h>
+#include <limits.h>
+
+
+void print_byte_as_bits(char val) {
+  for (int i = 7; 0 <= i; i--) {
+    printf("%c", (val & (1 << i)) ? '1' : '0');
+  }
+}
+
+void print_bits(char * ty, char * val, unsigned char * bytes, size_t num_bytes) {
+  printf("(%*s) %*s = [ ", 15, ty, 16, val);
+  for (size_t i = 0; i < num_bytes; i++) {
+    print_byte_as_bits(bytes[i]);
+    printf(" ");
+  }
+  printf("]\n");
+}
+
+#define SHOW(T,V) do { T x = V; print_bits(#T, #V, (unsigned char*) &x, sizeof(x)); } while(0)
+
 
 int main(int argc, char **argv) {
 	int sock, n;
@@ -39,6 +59,20 @@ int main(int argc, char **argv) {
 		strcpy(sentence, "----------\n");
 		n = recvfrom(sock,buffer,65536,0,NULL,NULL);
 		printf("%d bytes read\n%s\n",n,buffer);
+
+		int i=0;
+		for(i=0;i<=sizeof(buffer)-1;i++){
+			SHOW(int, buffer[i]);
+			//SHOW(unsigned int, 17);
+			//SHOW(long, 17);
+			//SHOW(short, 17);
+			//SHOW(uint32_t, 17);
+			//SHOW(uint16_t, 17*256+18);
+			//SHOW(uint16_t, htons(17*256+18));
+			//SHOW(void*, &errno);
+			//SHOW(unsigned int, 1 << 1);
+		}
+
 		sprintf (stak, "%d bytes read\n", n);
 		strcat(sentence, stak);
 
